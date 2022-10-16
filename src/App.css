@@ -73,6 +73,29 @@ https: //getcssscan.com/css-buttons-examples
   background-color: cyan
 }
 
+.pink-colour {
+  background-color: pink;
+}
+
+.aqua-colour {
+  background-color: aqua;
+}
+.purple-colour {
+  background-color: purple;
+}
+
+.palered-colour {
+  background-color: #e58e73;
+}
+
+.deeporange-colour {
+  background-color: #ee7600;
+}
+
+.bluegrey-colour {
+  background-color: #6699cc
+}
+
 .flexbox-item {
   width: 8.5%;
 }

@@ -5,10 +5,18 @@ import "./App.css";
 
 const wordEndings = ["ff", "ll", "ss", "tt", "zz"];
 const wordEndingsSize = wordEndings.length;
-const wordUsage = {};
 
-const result = [];
-let number = 0;
+const wordColours = [
+  "pink-colour",
+  "aqua-colour",
+  "purple-colour",
+  "palered-colour",
+  "deeporange-colour",
+  "bluegrey-colour",
+];
+const wordColoursSize = wordColours.length;
+
+const wordUsage = {};
 
 function Output({ result }) {
   return (
@@ -30,6 +38,10 @@ function App() {
   const [currentResult, setCurrentResult] = useState([]);
   const [primes, setPrimes] = useState([]);
   const [err, setErr] = useState("");
+  //const resultsList = [];
+  const resultsList = [];
+  const allPrimes = [];
+  // i.e. [7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
 
   const isPrime = (number) => {
     for (let n = 3; n <= ~~Math.sqrt(number); n += 2) {
@@ -40,16 +52,18 @@ function App() {
     return true;
   };
 
-  useEffect(() => {
+  // Use REDUCE METHOD to handle the Fetch APIs and Promises
+  const handlePrimes = async () => {
+    let result;
+    try {
+      result = await allPrimes.reduce(async (previousPromise, primeNumber) => {
+        const numbersArray = await previousPromise;
 
-    async function doProcess(lastOne, number) {
-    
-      // Randomly pick a word ending
-      let randomNum = ~~(Math.random() * wordEndingsSize);
+        // Randomly pick a word ending
+        let randomNum = (Math.random() * wordEndingsSize) << 0;
 
-      // Fetch a 5 letter word with this word ending
-      try {
-        // fetch data from remote API
+        // Fetch a 5 letter word with this word ending
+
         const response = await fetch(
           `https://api.datamuse.com/words?sp=???${wordEndings[randomNum]}`,
           {
@@ -62,7 +76,7 @@ function App() {
 
         if (!response.ok) {
           throw new Error(
-            `Error! status: ${response.status} whilst processing number ${number}` +
+            `Error! status: ${response.status} whilst processing number ${primeNumber}` +
               ` word ending ${wordEndings[randomNum]}`
           );
         }
@@ -116,13 +130,14 @@ function App() {
 
             if (!response.ok) {
               throw new Error(
-                `Error! status: ${response.status} whilst processing number ${number}` +
+                `Error! status: ${response.status} whilst processing number ${primeNumber}` +
                   ` word ending ${anEnding}`
               );
             }
 
             result = await response.json();
-            // ensure suitably scored word has NOT been selected used already for a previous prime number
+            // ensure suitably scored word has NOT been selected used already
+            // for a previous prime number
             verify = result.find(
               (element) => element.score > 200 && !(element.word in wordUsage)
             );
@@ -135,7 +150,7 @@ function App() {
           if (!foundFlag) {
             // I cannot see this ever happening
             throw new Error(
-              `Cannot find an alternative for number ${number} and words ending with ${usedEnding}`
+              `Cannot find an alternative for number ${primeNumber} and words ending with ${usedEnding}`
             );
           }
         }
@@ -143,88 +158,92 @@ function App() {
         /* EG
         {word: 'scott', score: 627}
         */
-      
-          console.log(verify);
-          wordUsage[verify.word] = number;
-          console.log(wordUsage);
-          setCurrentResult((currentResult) => [...currentResult, lastOne]);
-      } catch (err) {
-        setErr(err.message);
+
+        wordUsage[verify.word] = primeNumber;
+
+        // Add to the array by updating the prime number's slot
+        // However use a random colour
+        randomNum = (Math.random() * wordColoursSize) << 0;
+        numbersArray.push({
+          number: primeNumber,
+          text: verify.word,
+          // colour: "buzz-colour",
+          // USE A RANDOM COLOUR
+          // Randomly pick a colour
+          colour: wordColours[randomNum],
+        });
+
+        return numbersArray;
+      }, Promise.resolve(resultsList)); // The current list of NonPrimes - add to it
+    } catch (err) {
+      setErr(err.message);
+    }
+    console.log(result);
+  };
+
+  const Process100Numbers = () => {
+    for (let number = 1; number <= 100; number++) {
+      let nonPrime = false;
+      let newEntry;
+      if (number % 3 === 0 && number % 5 === 0) {
+        newEntry = {
+          number: number,
+          text: "FizzBuzz",
+          colour: "fizzbuzz-colour",
+        };
+        nonPrime = true;
+      } else if (number % 3 === 0) {
+        newEntry = { number: number, text: "Fizz", colour: "fizz-colour" };
+        nonPrime = true;
+      } else if (number % 5 === 0) {
+        newEntry = { number: number, text: "Buzz", colour: "buzz-colour" };
+        nonPrime = true;
+      } else {
+        newEntry = { number: number, text: String(number), colour: "" };
       }
+
+      if (
+        nonPrime ||
+        !(
+          // If None are ALL TRUE?
+          (
+            number > 1 &&
+            number % 2 !== 0 && // even numbers - ignore!
+            isPrime(number)
+          )
+        )
+      ) {
+        resultsList.push(newEntry);
+      } else {
+        allPrimes.push(number);
+      }
+      console.log(resultsList);
     }
 
-    // FUNCTION DEFINITION ENDS
-    // USEEFFECT CODE STARTS
-
-    if (++number > 100) {
-      throw Error(11); // stop here & inspect the results
-    }
-
-    let nonPrime = false;
-    let newEntry;
-    if (number % 3 === 0 && number % 5 === 0) {
-      newEntry = { text: "FizzBuzz", colour: "fizzbuzz-colour" };
-      nonPrime = true;
-    } else if (number % 3 === 0) {
-      newEntry = { text: "Fizz", colour: "fizz-colour" };
-      nonPrime = true;
-    } else if (number % 5 === 0) {
-      newEntry = { text: "Buzz", colour: "buzz-colour" };
-      nonPrime = true;
-    } else {
-      newEntry = { text: String(number), colour: "" };
-    }
-
-    if (nonPrime) {
-        // Use the functional or "updater" form of the state setter
-        // to prevent 'an infinite chain of updates
-        setCurrentResult((currentResult) => [...currentResult, newEntry]);
-        return;
-    }
-
-    const lastOne = { text: String(number), colour: "" }
-    console.log(lastOne)
-    if (
-      !( // If None are ALL TRUE?
-        number > 1 &&
-        number % 2 !== 0 && // even numbers - ignore!)
-        isPrime(number)
-      )
-    ) { 
-        setCurrentResult((currentResult) => [...currentResult, newEntry]);
-        return;
-    }
-
-
-      /*
-        EG
-          {text: '7', colour: ''}
-        */
-    
-    setPrimes((primes) => [...primes, number]);
-    doProcess(lastOne, number);
-
-      console.log(currentResult);
-      console.log(lastOne);
-      throw Error(1); // stop here & inspect the results
-
-    // setReady(true); // Indicate that it is ready to Display the Results
-  }, [ready, currentResult, primes]);
+    /* 
+      Now process all the prime numbers
+      That is, perform a Fetch API for a random word to associate with each prime number
+      Check that the words have NOT been used for a previous prime number
+      I have decide to use the 'reduce' method for this process - see handlePrimes()
+    */
+    handlePrimes();
+  };
 
   return (
     <>
       {err && <h2>{err}</h2>}
-      {!ready && (
-      <div className="centre-spinner">
-        <Dna
-          visible={true}
-          height="80"
-          width="80"
-          ariaLabel="dna-loading"
-          wrapperStyle={{}}
-          wrapperClass="dna-wrapper"
-        />
-      </div>
+      {!err && !ready && (
+        <div className="centre-spinner">
+          <Dna
+            visible={true}
+            height="80"
+            width="80"
+            ariaLabel="dna-loading"
+            wrapperStyle={{}}
+            wrapperClass="dna-wrapper"
+          />
+          <Process100Numbers />
+        </div>
       )}
     </>
   );

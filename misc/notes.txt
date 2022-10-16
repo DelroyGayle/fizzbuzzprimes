@@ -1,0 +1,299 @@
+
+npm install react-loader-spinner --save
+
+USE DNA SPINNER
+
+<Dna
+  visible={true}
+  height="80"
+  width="80"
+  ariaLabel="dna-loading"
+  wrapperStyle={{}}
+  wrapperClass="dna-wrapper"
+/>
+
+
+NOTES
+
+This worked correctly first time:
+
+      async function doProcess(lastOne) {
+        try {
+          const response = await fetch(
+            "https://api.datamuse.com/words?sp=???zz",
+            {
+              method: "GET",
+              headers: {
+                Accept: "application/json",
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error(`Error! status: ${response.status}`);
+          }
+
+          const result = await response.json();
+          console.log(result[0].word)
+          console.log("result is: ", JSON.stringify(result, null, 4));
+
+        } catch (err) {
+          setErr(err.message);
+        }
+      }
+==>
+
+App.js:51 result is:  [
+    {
+        "word": "whizz",
+        "score": 482
+    },
+    {
+        "word": "abuzz",
+        "score": 339
+    },
+    {
+        "word": "frizz",
+        "score": 267
+    },
+    {
+        "word": "swizz",
+        "score": 246
+    },
+    {
+        "word": "scuzz",
+        "score": 225
+    },
+    {
+        "word": "spazz",
+        "score": 92
+    },
+    {
+        "word": "pzazz",
+        "score": 59
+    },
+    {
+        "word": "taizz",
+        "score": 48
+    },
+    {
+        "word": "blizz",
+        "score": 24
+    },
+    {
+        "word": "frazz",
+        "score": 16
+    },
+    {
+        "word": "chazz",
+        "score": 10
+    },
+    {
+        "word": "snazz",
+        "score": 6
+    },
+    {
+        "word": "grizz",
+        "score": 5
+    },
+    {
+        "word": "zzzzz",
+        "score": 4
+    },
+    {
+        "word": "skuzz",
+        "score": 3
+    }
+]
+
+
+EG using
+        // Add to the array by updating the prime number's slot
+        numbersArray.push({
+          number: primeNumber,
+          text: verify.word,
+          colour: "buzz-colour",
+        });
+
+handlePrimes() added the following:
+
+77: {number: 7, text: 'scott', colour: 'buzz-colour'}
+78: {number: 11, text: 'grass', colour: 'buzz-colour'}
+79: {number: 13, text: 'staff', colour: 'buzz-colour'}
+80: {number: 17, text: 'dwell', colour: 'buzz-colour'}
+81: {number: 19, text: 'glass', colour: 'buzz-colour'}
+82: {number: 23, text: 'brett', colour: 'buzz-colour'}
+83: {number: 29, text: 'troll', colour: 'buzz-colour'}
+84: {number: 31, text: 'class', colour: 'buzz-colour'}
+85: {number: 37, text: 'rhett', colour: 'buzz-colour'}
+86: {number: 41, text: 'whizz', colour: 'buzz-colour'}
+87: {number: 43, text: 'wyatt', colour: 'buzz-colour'}
+88: {number: 47, text: 'abuzz', colour: 'buzz-colour'}
+89: {number: 53, text: 'stuff', colour: 'buzz-colour'}
+90: {number: 59, text: 'frizz', colour: 'buzz-colour'}
+91: {number: 61, text: 'swizz', colour: 'buzz-colour'}
+92: {number: 67, text: 'scuzz', colour: 'buzz-colour'}
+93: {number: 71, text: 'spaff', colour: 'buzz-colour'}
+94: {number: 73, text: 'bluff', colour: 'buzz-colour'}
+95: {number: 79, text: 'platt', colour: 'buzz-colour'}
+96: {number: 83, text: 'scoff', colour: 'buzz-colour'}
+97: {number: 89, text: 'chaff', colour: 'buzz-colour'}
+98: {number: 97, text: 'scatt', colour: 'buzz-colour'}
+
+EG wordUsage =
+
+bliss: 67
+bluff: 79
+brett: 47
+class: 43
+cross: 53
+dwell: 13
+glass: 29
+grass: 17
+platt: 73
+pratt: 89
+press: 61
+rhett: 59
+scatt: 83
+scott: 37
+shell: 97
+spaff: 41
+spell: 31
+staff: 7
+stuff: 11
+troll: 23
+whizz: 19
+wyatt: 71
+
+
+Added random colours to the prime numbers ==>
+
+7: {number: 7, text: 'grass', colour: 'aqua-colour'}
+78: {number: 11, text: 'glass', colour: 'bluegrey-colour'}
+79: {number: 13, text: 'dwell', colour: 'pink-colour'}
+80: {number: 17, text: 'whizz', colour: 'aqua-colour'}
+81: {number: 19, text: 'staff', colour: 'deeporange-colour'}
+82: {number: 23, text: 'abuzz', colour: 'purple-colour'}
+83: {number: 29, text: 'troll', colour: 'purple-colour'}
+84: {number: 31, text: 'frizz', colour: 'pink-colour'}
+85: {number: 37, text: 'swizz', colour: 'palered-colour'}
+86: {number: 41, text: 'stuff', colour: 'palered-colour'}
+87: {number: 43, text: 'spaff', colour: 'purple-colour'}
+88: {number: 47, text: 'class', colour: 'palered-colour'}
+89: {number: 53, text: 'cross', colour: 'deeporange-colour'}
+90: {number: 59, text: 'press', colour: 'palered-colour'}
+91: {number: 61, text: 'bliss', colour: 'deeporange-colour'}
+92: {number: 67, text: 'scott', colour: 'palered-colour'}
+93: {number: 71, text: 'scuzz', colour: 'palered-colour'}
+94: {number: 73, text: 'gross', colour: 'purple-colour'}
+95: {number: 79, text: 'brett', colour: 'bluegrey-colour'}
+96: {number: 83, text: 'dress', colour: 'pink-colour'}
+97: {number: 89, text: 'bluff', colour: 'aqua-colour'}
+98: {number: 97, text: 'rhett', colour: 'deeporange-colour'}
+
+
+AT THE END OF RUNNING handlePrimes()
+==>
+0: {number: 1, text: '1', colour: ''}
+1: {number: 2, text: '2', colour: ''}
+2: {number: 3, text: 'Fizz', colour: 'fizz-colour'}
+3: {number: 4, text: '4', colour: ''}
+4: {number: 5, text: 'Buzz', colour: 'buzz-colour'}
+5: {number: 6, text: 'Fizz', colour: 'fizz-colour'}
+6: {number: 8, text: '8', colour: ''}
+7: {number: 9, text: 'Fizz', colour: 'fizz-colour'}
+8: {number: 10, text: 'Buzz', colour: 'buzz-colour'}
+9: {number: 12, text: 'Fizz', colour: 'fizz-colour'}
+10: {number: 14, text: '14', colour: ''}
+11: {number: 15, text: 'FizzBuzz', colour: 'fizzbuzz-colour'}
+12: {number: 16, text: '16', colour: ''}
+13: {number: 18, text: 'Fizz', colour: 'fizz-colour'}
+14: {number: 20, text: 'Buzz', colour: 'buzz-colour'}
+15: {number: 21, text: 'Fizz', colour: 'fizz-colour'}
+16: {number: 22, text: '22', colour: ''}
+17: {number: 24, text: 'Fizz', colour: 'fizz-colour'}
+18: {number: 25, text: 'Buzz', colour: 'buzz-colour'}
+19: {number: 26, text: '26', colour: ''}
+20: {number: 27, text: 'Fizz', colour: 'fizz-colour'}
+21: {number: 28, text: '28', colour: ''}
+22: {number: 30, text: 'FizzBuzz', colour: 'fizzbuzz-colour'}
+23: {number: 32, text: '32', colour: ''}
+24: {number: 33, text: 'Fizz', colour: 'fizz-colour'}
+25: {number: 34, text: '34', colour: ''}
+26: {number: 35, text: 'Buzz', colour: 'buzz-colour'}
+27: {number: 36, text: 'Fizz', colour: 'fizz-colour'}
+28: {number: 38, text: '38', colour: ''}
+29: {number: 39, text: 'Fizz', colour: 'fizz-colour'}
+30: {number: 40, text: 'Buzz', colour: 'buzz-colour'}
+31: {number: 42, text: 'Fizz', colour: 'fizz-colour'}
+32: {number: 44, text: '44', colour: ''}
+33: {number: 45, text: 'FizzBuzz', colour: 'fizzbuzz-colour'}
+34: {number: 46, text: '46', colour: ''}
+35: {number: 48, text: 'Fizz', colour: 'fizz-colour'}
+36: {number: 49, text: '49', colour: ''}
+37: {number: 50, text: 'Buzz', colour: 'buzz-colour'}
+38: {number: 51, text: 'Fizz', colour: 'fizz-colour'}
+39: {number: 52, text: '52', colour: ''}
+40: {number: 54, text: 'Fizz', colour: 'fizz-colour'}
+41: {number: 55, text: 'Buzz', colour: 'buzz-colour'}
+42: {number: 56, text: '56', colour: ''}
+43: {number: 57, text: 'Fizz', colour: 'fizz-colour'}
+44: {number: 58, text: '58', colour: ''}
+45: {number: 60, text: 'FizzBuzz', colour: 'fizzbuzz-colour'}
+46: {number: 62, text: '62', colour: ''}
+47: {number: 63, text: 'Fizz', colour: 'fizz-colour'}
+48: {number: 64, text: '64', colour: ''}
+49: {number: 65, text: 'Buzz', colour: 'buzz-colour'}
+50: {number: 66, text: 'Fizz', colour: 'fizz-colour'}
+51: {number: 68, text: '68', colour: ''}
+52: {number: 69, text: 'Fizz', colour: 'fizz-colour'}
+53: {number: 70, text: 'Buzz', colour: 'buzz-colour'}
+54: {number: 72, text: 'Fizz', colour: 'fizz-colour'}
+55: {number: 74, text: '74', colour: ''}
+56: {number: 75, text: 'FizzBuzz', colour: 'fizzbuzz-colour'}
+57: {number: 76, text: '76', colour: ''}
+58: {number: 77, text: '77', colour: ''}
+59: {number: 78, text: 'Fizz', colour: 'fizz-colour'}
+60: {number: 80, text: 'Buzz', colour: 'buzz-colour'}
+61: {number: 81, text: 'Fizz', colour: 'fizz-colour'}
+62: {number: 82, text: '82', colour: ''}
+63: {number: 84, text: 'Fizz', colour: 'fizz-colour'}
+64: {number: 85, text: 'Buzz', colour: 'buzz-colour'}
+65: {number: 86, text: '86', colour: ''}
+66: {number: 87, text: 'Fizz', colour: 'fizz-colour'}
+67: {number: 88, text: '88', colour: ''}
+68: {number: 90, text: 'FizzBuzz', colour: 'fizzbuzz-colour'}
+69: {number: 91, text: '91', colour: ''}
+70: {number: 92, text: '92', colour: ''}
+71: {number: 93, text: 'Fizz', colour: 'fizz-colour'}
+72: {number: 94, text: '94', colour: ''}
+73: {number: 95, text: 'Buzz', colour: 'buzz-colour'}
+74: {number: 96, text: 'Fizz', colour: 'fizz-colour'}
+75: {number: 98, text: '98', colour: ''}
+76: {number: 99, text: 'Fizz', colour: 'fizz-colour'}
+77: {number: 100, text: 'Buzz', colour: 'buzz-colour'}
+
+*** NEWLY ADDED ***
+
+78: {number: 7, text: 'staff', colour: 'aqua-colour'}
+79: {number: 11, text: 'whizz', colour: 'aqua-colour'}
+80: {number: 13, text: 'stuff', colour: 'palered-colour'}
+81: {number: 17, text: 'abuzz', colour: 'deeporange-colour'}
+82: {number: 19, text: 'grass', colour: 'palered-colour'}
+83: {number: 23, text: 'frizz', colour: 'palered-colour'}
+84: {number: 29, text: 'scott', colour: 'deeporange-colour'}
+85: {number: 31, text: 'spaff', colour: 'purple-colour'}
+86: {number: 37, text: 'swizz', colour: 'deeporange-colour'}
+87: {number: 41, text: 'glass', colour: 'pink-colour'}
+88: {number: 43, text: 'bluff', colour: 'palered-colour'}
+89: {number: 47, text: 'scoff', colour: 'aqua-colour'}
+90: {number: 53, text: 'chaff', colour: 'aqua-colour'}
+91: {number: 59, text: 'dwell', colour: 'purple-colour'}
+92: {number: 61, text: 'troll', colour: 'palered-colour'}
+93: {number: 67, text: 'stiff', colour: 'palered-colour'}
+94: {number: 71, text: 'brett', colour: 'palered-colour'}
+95: {number: 73, text: 'class', colour: 'purple-colour'}
+96: {number: 79, text: 'rhett', colour: 'purple-colour'}
+97: {number: 83, text: 'whiff', colour: 'aqua-colour'}
+98: {number: 89, text: 'scuzz', colour: 'palered-colour'}
+99: {number: 97, text: 'wyatt', colour: 'bluegrey-colour'}

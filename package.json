@@ -36,7 +36,7 @@
       "last 1 safari version"
     ]
   },
-  "description": "Display 1-100 as coloured buttons according to the game FizzBuzz",
+  "description": "Display 1-100 as coloured buttons attaching new words to primes numbers - based on the game FizzBuzz",
   "main": "index.js",
   "keywords": [
     "fizz",

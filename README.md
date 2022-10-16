@@ -54,5 +54,8 @@ Meditations on Python, mathematics, science, engineering, and design
 # Here are a couple of outputs from FizzBuzzPrimes
 
 ![image](https://user-images.githubusercontent.com/91061592/196045261-d9225105-b465-4951-bee0-7a5d7e2b34f9.png)
+
+#
+
 ![image](https://user-images.githubusercontent.com/91061592/196045283-35611c06-912d-447c-858f-4a087ab8bb88.png)
 

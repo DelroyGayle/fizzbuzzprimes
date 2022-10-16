@@ -85,7 +85,7 @@ function App() {
         */
 
         let verify = result.find(
-          (element) => element.score > 200 && !(element.score in wordUsage)
+          (element) => element.score > 200 && !(element.word in wordUsage)
         );
 
         // Ensure that the word has not been used before
@@ -117,14 +117,14 @@ function App() {
             if (!response.ok) {
               throw new Error(
                 `Error! status: ${response.status} whilst processing number ${number}` +
-                  `word ending ${anEnding}`
+                  ` word ending ${anEnding}`
               );
             }
 
             result = await response.json();
             // ensure suitably scored word has NOT been selected used already for a previous prime number
             verify = result.find(
-              (element) => element.score > 200 && !(element.score in wordUsage)
+              (element) => element.score > 200 && !(element.word in wordUsage)
             );
             if (verify !== undefined) {
               foundFlag = true;

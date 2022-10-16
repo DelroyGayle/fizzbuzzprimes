@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Dna } from "react-loader-spinner";
 
 import "./App.css";
@@ -34,11 +34,9 @@ function Output({ result }) {
 }
 
 function App() {
-  const [ready, setReady] = useState(null);
-  const [currentResult, setCurrentResult] = useState([]);
-  const [primes, setPrimes] = useState([]);
+  const [listReady, setListReady] = useState(null);
   const [err, setErr] = useState("");
-  //const resultsList = [];
+
   const resultsList = [];
   const allPrimes = [];
   // i.e. [7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, 73, 79, 83, 89, 97]
@@ -52,37 +50,38 @@ function App() {
     return true;
   };
 
-  // Use REDUCE METHOD to handle the Fetch APIs and Promises
-  const handlePrimes = async () => {
-    let result;
+  // Use the REDUCE METHOD to handle the Fetch APIs and Promises
+  const handlePrimes = async (setListReady) => {
+    let finalResult;
     try {
-      result = await allPrimes.reduce(async (previousPromise, primeNumber) => {
-        const numbersArray = await previousPromise;
+      finalResult = await allPrimes.reduce(
+        async (previousPromise, primeNumber) => {
+          const numbersArray = await previousPromise;
 
-        // Randomly pick a word ending
-        let randomNum = (Math.random() * wordEndingsSize) << 0;
+          // Randomly pick a word ending
+          let randomNum = (Math.random() * wordEndingsSize) << 0;
 
-        // Fetch a 5 letter word with this word ending
+          // Fetch a 5 letter word with this word ending
 
-        const response = await fetch(
-          `https://api.datamuse.com/words?sp=???${wordEndings[randomNum]}`,
-          {
-            method: "GET",
-            headers: {
-              Accept: "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(
-            `Error! status: ${response.status} whilst processing number ${primeNumber}` +
-              ` word ending ${wordEndings[randomNum]}`
+          const response = await fetch(
+            `https://api.datamuse.com/words?sp=???${wordEndings[randomNum]}`,
+            {
+              method: "GET",
+              headers: {
+                Accept: "application/json",
+              },
+            }
           );
-        }
 
-        let result = await response.json();
-        /*
+          if (!response.ok) {
+            throw new Error(
+              `Error! status: ${response.status} whilst processing number ${primeNumber}` +
+                ` word ending ${wordEndings[randomNum]}`
+            );
+          }
+
+          let result = await response.json();
+          /*
              Only use if the score is above 200
              Although Datamuse's documentation states that
              the "score" field has no interpretable meaning, other than as a way to rank the results.
@@ -98,90 +97,103 @@ function App() {
              Also ensure the word has NOT already been selected for a previous prime number
         */
 
-        let verify = result.find(
-          (element) => element.score > 200 && !(element.word in wordUsage)
-        );
+          let verify = result.find(
+            (element) => element.score > 200 && !(element.word in wordUsage)
+          );
 
-        // Ensure that the word has not been used before
-        if (verify === undefined) {
-          /*
+          // Ensure that the word has not been used before
+          if (verify === undefined) {
+            /*
               If the word has been used before and there are no other suitable candidates in 'result'
               then find an alternative using the other possible wordEndings
           */
 
-          let usedEnding = wordEndings[randomNum];
-          let foundFlag = false;
-          for (const anEnding of wordEndings) {
-            if (anEnding === usedEnding) {
-              // ignore this one - used already
-              continue;
+            let usedEnding = wordEndings[randomNum];
+            let foundFlag = false;
+            for (const anEnding of wordEndings) {
+              if (anEnding === usedEnding) {
+                // ignore this one - used already
+                continue;
+              }
+
+              // fetch alternative word from remote API
+              const response = await fetch(
+                `https://api.datamuse.com/words?sp=???${anEnding}`,
+                {
+                  method: "GET",
+                  headers: {
+                    Accept: "application/json",
+                  },
+                }
+              );
+
+              if (!response.ok) {
+                throw new Error(
+                  `Error! status: ${response.status} whilst processing number ${primeNumber}` +
+                    ` word ending ${anEnding}`
+                );
+              }
+
+              result = await response.json();
+              // ensure suitably scored word has NOT been selected used already
+              // for a previous prime number
+              verify = result.find(
+                (element) => element.score > 200 && !(element.word in wordUsage)
+              );
+              if (verify !== undefined) {
+                foundFlag = true;
+                break;
+              }
             }
 
-            // fetch alternative word from remote API
-            const response = await fetch(
-              `https://api.datamuse.com/words?sp=???${anEnding}`,
-              {
-                method: "GET",
-                headers: {
-                  Accept: "application/json",
-                },
-              }
-            );
-
-            if (!response.ok) {
+            if (!foundFlag) {
+              // I cannot see this ever happening
               throw new Error(
-                `Error! status: ${response.status} whilst processing number ${primeNumber}` +
-                  ` word ending ${anEnding}`
+                `Cannot find an alternative for number ${primeNumber} and words ending with ${usedEnding}`
               );
             }
-
-            result = await response.json();
-            // ensure suitably scored word has NOT been selected used already
-            // for a previous prime number
-            verify = result.find(
-              (element) => element.score > 200 && !(element.word in wordUsage)
-            );
-            if (verify !== undefined) {
-              foundFlag = true;
-              break;
-            }
           }
 
-          if (!foundFlag) {
-            // I cannot see this ever happening
-            throw new Error(
-              `Cannot find an alternative for number ${primeNumber} and words ending with ${usedEnding}`
-            );
-          }
-        }
-
-        /* EG
+          /* EG
         {word: 'scott', score: 627}
         */
 
-        wordUsage[verify.word] = primeNumber;
+          wordUsage[verify.word] = primeNumber;
 
-        // Add to the array by updating the prime number's slot
-        // However use a random colour
-        randomNum = (Math.random() * wordColoursSize) << 0;
-        numbersArray.push({
-          number: primeNumber,
-          text: verify.word,
-          // colour: "buzz-colour",
-          // USE A RANDOM COLOUR
-          // Randomly pick a colour
-          colour: wordColours[randomNum],
-        });
+          // Add to the array by updating the prime number's slot
+          // However use a random colour
+          randomNum = (Math.random() * wordColoursSize) << 0;
+          numbersArray.push({
+            number: primeNumber,
+            text: verify.word,
+            // colour: "buzz-colour",
+            // USE A RANDOM COLOUR
+            // Randomly pick a colour
+            colour: wordColours[randomNum],
+          });
 
-        return numbersArray;
-      }, Promise.resolve(resultsList)); // The current list of NonPrimes - add to it
+          return numbersArray;
+        },
+        Promise.resolve(resultsList) // The current list of NonPrimes - add to it
+      );
     } catch (err) {
       setErr(err.message);
     }
-    console.log(result);
+
+    sortAndDisplay(setListReady,finalResult);
   };
 
-  const Process100Numbers = () => {
+  
+  const sortAndDisplay = (setListReady,resultsList) => {
+    const sortedList = resultsList.sort(function (a, b) {
+      return a.number - b.number;
+    });
+    setListReady(sortedList);
+  }; 
+
+
+  const Process100Numbers = ({setListReady}) => {
+
     for (let number = 1; number <= 100; number++) {
       let nonPrime = false;
       let newEntry;
@@ -217,7 +229,6 @@ function App() {
       } else {
         allPrimes.push(number);
       }
-      console.log(resultsList);
     }
 
     /* 
@@ -226,13 +237,17 @@ function App() {
       Check that the words have NOT been used for a previous prime number
       I have decide to use the 'reduce' method for this process - see handlePrimes()
     */
-    handlePrimes();
+   
+    handlePrimes(setListReady);
   };
 
   return (
     <>
+      {/* Error Handling */}
       {err && <h2>{err}</h2>}
-      {!err && !ready && (
+
+      {/* Show Spinner Until All The Prime Numbers have been determined */}
+      {!err && !listReady && (
         <div className="centre-spinner">
           <Dna
             visible={true}
@@ -242,15 +257,14 @@ function App() {
             wrapperStyle={{}}
             wrapperClass="dna-wrapper"
           />
-          <Process100Numbers />
+          <Process100Numbers setListReady={setListReady} />
         </div>
       )}
+
+      {/* Display the Results */}
+      {!err && listReady && <Output result={listReady} />}
     </>
   );
-  /*
-  // don't render until 'result' is ready!
-  return <div>{ready && <Output result={result} />}</div>;
-  */
 }
 
 export default App;

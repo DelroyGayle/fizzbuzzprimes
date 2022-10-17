@@ -86,7 +86,7 @@ function App() {
              Although Datamuse's documentation states that
              the "score" field has no interpretable meaning, other than as a way to rank the results.
              From what I can see, anything below 200 is either a slang word or a very obscure word
-             So chose above 200
+             So choose above 200
              EG
                  {
                   "word": "dwell",
@@ -180,20 +180,17 @@ function App() {
       setErr(err.message);
     }
 
-    sortAndDisplay(setListReady,finalResult);
+    sortAndDisplay(setListReady, finalResult);
   };
 
-  
-  const sortAndDisplay = (setListReady,resultsList) => {
+  const sortAndDisplay = (setListReady, resultsList) => {
     const sortedList = resultsList.sort(function (a, b) {
       return a.number - b.number;
     });
     setListReady(sortedList);
-  }; 
+  };
 
-
-  const Process100Numbers = ({setListReady}) => {
-
+  const Process100Numbers = ({ setListReady }) => {
     for (let number = 1; number <= 100; number++) {
       let nonPrime = false;
       let newEntry;
@@ -235,9 +232,9 @@ function App() {
       Now process all the prime numbers
       That is, perform a Fetch API for a random word to associate with each prime number
       Check that the words have NOT been used for a previous prime number
-      I have decide to use the 'reduce' method for this process - see handlePrimes()
+      I have decided to use the 'reduce' method for this process - see handlePrimes()
     */
-   
+
     handlePrimes(setListReady);
   };
 

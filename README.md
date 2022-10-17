@@ -30,7 +30,7 @@ Cyan buttons labelled "FizzBuzz" are shown for numbers that are multiples of 3 a
 i.e. multiples of 15
 
 Orange buttons labelled 'Fizz' are shown for numbers that are multiples of 3\
-Yellow buttons labelled 'Buzz' are shown for numbers that are multiples of 5\
+Yellow buttons labelled 'Buzz' are shown for numbers that are multiples of 5
 
 However odd prime numbers are given randomly coloured buttons with a random word ending with two identical letters
 

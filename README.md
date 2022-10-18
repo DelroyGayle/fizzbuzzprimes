@@ -55,7 +55,37 @@ Meditations on Python, mathematics, science, engineering, and design
 
 ![image](https://user-images.githubusercontent.com/91061592/196045261-d9225105-b465-4951-bee0-7a5d7e2b34f9.png)
 
-#
-
 ![image](https://user-images.githubusercontent.com/91061592/196045283-35611c06-912d-447c-858f-4a087ab8bb88.png)
 
+
+## Datamuse API
+
+### What is it?
+The [Datamuse API](https://www.datamuse.com/api/) is a word-finding query engine for developers. You can use it in your apps to find words that match a given set of constraints and that are likely in a given context. You can specify a wide variety of constraints on meaning, spelling, sound, and vocabulary in your queries, in any combination.
+
+### What is it good for?
+Applications use the API for a wide range of features, including autocomplete on text input fields, search relevancy ranking, assistive writing apps, word games, and more. 
+
+For this project, I used the following type of query
+>**/words?sp=???zz**
+
+### Here is a sample of queries:
+
+>words related to duck that start with the letter b	
+>>>/words?ml=duck&sp=b*
+
+>words related to spoon that end with the letter a	
+>>>/words?ml=spoon&sp=*a
+
+>words that sound like jirraf	
+>>>/words?sl=jirraf
+
+>words that start with t, end in k, and have two letters in between	
+>>>/words?sp=t??k
+
+### Usage limits
+You can use this service without restriction and without an API key for up to 100,000 requests per day. 
+
+If you use the API within a publicly available app, kindly acknowledge the Datamuse API within your app's documentation.
+
+For more details please look at the [documentation](https://www.datamuse.com/api/).
